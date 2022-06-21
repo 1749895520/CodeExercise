@@ -149,6 +149,62 @@ public:
 
 通过二分查找的方法先从数组的两端的和开始比较，若**sum**比**target**小，则**left+1**；若**sum**比**target**大，则**right-1。**
 
+
+#### [344. 反转字符串](https://leetcode.cn/problems/reverse-string/)
+
+**类型：**	递归		双指针	字符串
+
+```cpp
+class Solution {
+public:
+    void reverseString(vector<char>& s) {
+        int left = 0,right = s.size() - 1;
+        while(left<right) {
+            char temp = s[left];
+            s[left] = s[right];
+            s[right] = temp;
+            left++;right--;
+        }
+    }
+};
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(1)
+
+通过双指针从头和尾同时进行。
+
+
+#### [5. 最长回文子串](https://leetcode.cn/problems/longest-palindromic-substring/)
+
+**类型：**	字符串	动态规划
+
+```cpp
+class Solution {
+public:
+    string longestPalindrome(string s) {
+        string ans = "";
+        for(int i=0;i<s.length();i++) {
+            string s1 = charge(s,i,i);
+            string s2 = charge(s,i,i+1);
+            ans = ans.length() > s1.length() ? ans : s1;
+            ans = ans.length() > s2.length() ? ans : s2;
+        }
+        return ans;
+    }
+    string charge(string s,int left,int right) {
+        while(left>=0 && right < s.length() && s[left]==s[right]) {
+            left--;
+            right++;
+        }
+        return s.substr(left+1,right-left-1);
+    }
+};
+```
+
+**时间复杂度：**	O(n²)	**空间复杂度：**	O(1)
+
+先确定中心点的位置，计算回文字符串长度分别为奇数和偶数的情况，利用双指针求出每一个回文字符串，并通过比较实时更新最长回文字符串。
+
 ---
 
 ## 补充内容：
