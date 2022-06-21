@@ -8,8 +8,6 @@
 
 ---
 
-
-
 ## 日常刷题：
 
 ### 2022.6.21——数组
@@ -17,6 +15,7 @@
 *周二——雷阵雨转阴——35℃/22℃*
 
 *今天开始刷LeetCode中的《初涉算法》篇，先从数组开始：*
+
 
 #### [26. 删除有序数组中的重复项](https://leetcode.cn/problems/remove-duplicates-from-sorted-array/)
 
@@ -45,8 +44,8 @@ public:
 
 详情参考：[双指针技巧秒杀七道数组题目 :: labuladong的算法小抄](https://labuladong.github.io/algo/2/18/21/)
 
-
 *由上一题可延伸：*
+
 
 #### [83. 删除排序链表中的重复元素](https://leetcode.cn/problems/remove-duplicates-from-sorted-list/)
 
@@ -126,6 +125,5 @@ public:
 利用上一题的做法最后在将**slow**指针往后的多余数替换为0。
 
 ---
-
 
 ## 补充内容：
