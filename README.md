@@ -16,7 +16,6 @@
 
 *今天开始刷LeetCode中的《初涉算法》篇，先从数组开始：*
 
-
 #### [26. 删除有序数组中的重复项](https://leetcode.cn/problems/remove-duplicates-from-sorted-array/)
 
 **类型：** 数组	双指针
@@ -46,7 +45,6 @@ public:
 
 *由上一题可延伸：*
 
-
 #### [83. 删除排序链表中的重复元素](https://leetcode.cn/problems/remove-duplicates-from-sorted-list/)
 
 **类型：**	链表
@@ -74,7 +72,6 @@ public:
 
 同样使用快慢指针，详情见上文。
 
-
 #### [27. 移除元素](https://leetcode.cn/problems/remove-element/)
 
 **类型：**	数组		双指针
@@ -97,7 +94,6 @@ public:
 **时间复杂度：**	O(N)	**空间复杂度：**	O(1)
 
 同样利用双指针，将重复的元素覆盖，最后返回数组长度为slow的值。
-
 
 #### [283. 移动零](https://leetcode.cn/problems/move-zeroes/)
 
@@ -123,6 +119,12 @@ public:
 **时间复杂度：**	O(N)	**空间复杂度：**	O(1)
 
 利用上一题的做法最后在将**slow**指针往后的多余数替换为0。
+
+
+#### [167. 两数之和 II - 输入有序数组](https://leetcode.cn/problems/two-sum-ii-input-array-is-sorted/)
+
+**类型：**	数组		双指针	二分查找
+
 
 ---
 
