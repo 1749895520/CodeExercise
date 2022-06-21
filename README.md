@@ -125,6 +125,29 @@ public:
 
 **类型：**	数组		双指针	二分查找
 
+```cpp
+class Solution {
+public:
+    vector<int> twoSum(vector<int>& numbers, int target) {
+        int left = 0,right = numbers.size()-1;
+        while(left<right) {
+            int sum = numbers[left] + numbers[right];
+            if(sum == target) {
+                return {left+1,right+1};
+            } else if(sum < target) {
+                left++;
+            } else {
+                right--;
+            }
+        }
+        return {0,0};
+    }
+};
+```
+
+**时间复杂度：**	O(n log n)	**空间复杂度：**	O(1)
+
+通过二分查找的方法先从数组的两端的和开始比较，若**sum**比**target**小，则**left+1**；若**sum**比**target**大，则**right-1。**
 
 ---
 
