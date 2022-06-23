@@ -364,14 +364,11 @@ class Solution {
 
 将两种计算全部用后序遍历的方法计算，可以将时间复杂度降到O(N)。
 
-
-
 ### 2022.6.23——二叉树
 
 周四——小雨转大雨——33℃/26℃
 
 今天继续练习二叉树的题目。
-
 
 #### [100. 相同的树](https://leetcode.cn/problems/same-tree/)
 
@@ -395,7 +392,6 @@ class Solution {
 ```
 
 **时间复杂度：**	O(min(m,n))	**空间复杂度：**	O(min(m,n))
-
 
 #### [111. 二叉树的最小深度](https://leetcode.cn/problems/minimum-depth-of-binary-tree/)
 
@@ -432,7 +428,6 @@ class Solution {
 
 **时间复杂度：**	O(N)	**空间复杂度：**	O(N)
 
-
 #### [637. 二叉树的层平均值](https://leetcode.cn/problems/average-of-levels-in-binary-tree/)
 
 **类型：**	树	深度优先搜索	广度优先搜索	二叉树
@@ -468,7 +463,6 @@ class Solution {
 
 **时间复杂度：**	O(N)	**空间复杂度：**	O(N)
 
-
 #### [102. 二叉树的层序遍历](https://leetcode.cn/problems/binary-tree-level-order-traversal/)
 
 **类型：**	树	广度优先搜索	二叉树
@@ -502,7 +496,6 @@ class Solution {
 
 **时间复杂度：**	O(N)	**空间复杂度：**	O(N)
 
-
 #### [107. 二叉树的层序遍历 II](https://leetcode.cn/problems/binary-tree-level-order-traversal-ii/)
 
 **类型：**	树	广度优先搜索	二叉树
@@ -535,7 +528,6 @@ class Solution {
 ```
 
 **时间复杂度：**	O(N)	**空间复杂度：**	O(N)
-
 
 #### [103. 二叉树的锯齿形层序遍历](https://leetcode.cn/problems/binary-tree-zigzag-level-order-traversal/)
 
@@ -575,6 +567,81 @@ class Solution {
 ```
 
 **时间复杂度：**	O(N)	**空间复杂度：**	O(N)
+
+
+
+### 2022.6.24——链表
+
+周五——小雨——30℃/26℃
+
+今天开始从数据结构部分刷题。
+
+
+#### [21. 合并两个有序链表](https://leetcode.cn/problems/merge-two-sorted-lists/)
+
+**类型：**	递归		链表
+
+```java
+class Solution {
+    public ListNode mergeTwoLists(ListNode list1, ListNode list2) {
+        ListNode head = new ListNode(-1),p = head;
+        ListNode p1 = list1,p2 = list2;
+        while(p1!=null && p2!=null) {
+            if(p1.val<p2.val) {
+                p.next = p1;
+                p1 = p1.next;
+            } else{
+                p.next = p2;
+                p2 = p2.next;
+            }
+            p = p.next;
+        }
+        if(p1!=null) {
+            p.next = p1;
+        }
+        if(p2!=null) {
+            p.next = p2;
+        }
+        return head.next;
+    }
+}
+```
+
+**时间复杂度：**	O(m+n)	**空间复杂度：**	O(m+n)
+
+
+#### [86. 分隔链表](https://leetcode.cn/problems/partition-list/)
+
+**类型：**	链表		双指针
+
+```java
+class Solution {
+    public ListNode partition(ListNode head, int x) {
+        ListNode dummy1 = new ListNode(-1);
+        ListNode dummy2 = new ListNode(-1);
+        ListNode p1 = dummy1,p2 = dummy2;
+        ListNode p = head;
+        while(p!=null) {
+            if(p.val<x) {
+                p1.next = p;
+                p1 = p1.next;
+            } else {
+                p2.next = p;
+                p2 = p2.next;
+            }
+            ListNode temp = p.next;
+            p.next = null;
+            p = temp;
+        }
+        p1.next = dummy2.next;
+        return dummy1.next;
+    }
+}
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(N)
+
+利用两个子链表，将大于等于x和小于x的节点分别存入不同的子链表，最后再将两个子链表连接。注意在每次存入子链表后要断开next的节点。
 
 ---
 
@@ -662,8 +729,6 @@ void levelTraverse(TreeNode root) {
 }
 ```
 
-
-
 ```java
 List<List<Integer>> res = new ArrayList<>();
 
@@ -691,8 +756,6 @@ void traverse(TreeNode root, int depth) {
     traverse(root.right, depth + 1);
 }
 ```
-
-
 
 ```java
 List<List<Integer>> res = new LinkedList<>();
@@ -733,5 +796,7 @@ void traverse(List<TreeNode> curLevelNodes) {
 ```
 
 ---
+
+
 
 ## 补充内容：
