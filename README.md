@@ -396,6 +396,186 @@ class Solution {
 
 **时间复杂度：**	O(min(m,n))	**空间复杂度：**	O(min(m,n))
 
+
+#### [111. 二叉树的最小深度](https://leetcode.cn/problems/minimum-depth-of-binary-tree/)
+
+**类型：**	树	深度优先搜索	广度优先搜索	二叉树
+
+```java
+class Solution {
+    public int minDepth(TreeNode root) {
+        //  层序遍历
+        if(root==null) return 0;
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        int depth = 1;
+        while(!q.isEmpty()){
+            int len = q.size();
+            for(int i=0;i<len;i++) {
+                TreeNode node = q.poll();
+                if(node.left==null&&node.right==null) {
+                    return depth;
+                }
+                if(node.left!=null) {
+                    q.offer(node.left);
+                }
+                if(node.right!=null) {
+                    q.offer(node.right);
+                }
+            }
+            depth++;
+        }
+        return depth;
+    }
+}
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(N)
+
+
+#### [637. 二叉树的层平均值](https://leetcode.cn/problems/average-of-levels-in-binary-tree/)
+
+**类型：**	树	深度优先搜索	广度优先搜索	二叉树
+
+```java
+class Solution {
+    public List<Double> averageOfLevels(TreeNode root) {
+        if(root==null) return null;
+        Queue<TreeNode> q = new LinkedList<>();
+        List<Double> l = new LinkedList<>();
+        q.offer(root);
+        while(!q.isEmpty()) {
+            int len = q.size();
+            double ans = 0;
+            for(int i=0;i<len;i++) {
+                TreeNode node = q.poll();
+                double val = node.val;
+                ans += val;
+                if(node.left!=null) {
+                    q.offer(node.left);
+                }
+                if(node.right!=null) {
+                    q.offer(node.right);
+                }
+            }
+            ans /= len*1.0;
+            l.add(ans);
+        }
+        return l;
+    }
+}
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(N)
+
+
+#### [102. 二叉树的层序遍历](https://leetcode.cn/problems/binary-tree-level-order-traversal/)
+
+**类型：**	树	广度优先搜索	二叉树
+
+```java
+class Solution {
+    public List<List<Integer>> levelOrder(TreeNode root) {
+        List<List<Integer>> ans = new LinkedList<>();
+        if(root==null) return ans;
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        while(!q.isEmpty()) {
+            int len = q.size();
+            List<Integer> l = new LinkedList<>();
+            for(int i=0;i<len;i++) {   
+                TreeNode node = q.poll();
+                l.add(node.val);
+                if(node.left!=null) {
+                    q.offer(node.left);
+                }
+                if(node.right!=null) {
+                    q.offer(node.right);
+                }
+            }
+            ans.add(l);
+        }
+        return ans;
+    }
+}
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(N)
+
+
+#### [107. 二叉树的层序遍历 II](https://leetcode.cn/problems/binary-tree-level-order-traversal-ii/)
+
+**类型：**	树	广度优先搜索	二叉树
+
+```java
+class Solution {
+    public List<List<Integer>> levelOrderBottom(TreeNode root) {
+        LinkedList<List<Integer>> ans = new LinkedList<>();
+        if(root==null) return ans;
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        while(!q.isEmpty()) {
+            int len = q.size();
+            List<Integer> l = new LinkedList<>();
+            for(int i=0;i<len;i++) {
+                TreeNode node = q.poll();
+                l.add(node.val);
+                if(node.left!=null) {
+                    q.offer(node.left);
+                }
+                if(node.right!=null) {
+                    q.offer(node.right);
+                }
+            }
+            ans.addFirst(l);
+        }
+        return ans;
+    }
+}
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(N)
+
+
+#### [103. 二叉树的锯齿形层序遍历](https://leetcode.cn/problems/binary-tree-zigzag-level-order-traversal/)
+
+**类型：**	树	广度优先搜索	二叉树
+
+```java
+class Solution {
+    public List<List<Integer>> zigzagLevelOrder(TreeNode root) {
+        List<List<Integer>> ans = new LinkedList<>();
+        if(root==null) return ans;
+        Queue<TreeNode> q = new LinkedList<>();
+        q.offer(root);
+        boolean flag = true;
+        while(!q.isEmpty()) {
+            int len = q.size();
+            LinkedList<Integer> l = new LinkedList<>();
+            for(int i=0;i<len;i++) {
+                TreeNode node = q.poll();
+                if(flag) {
+                    l.add(node.val);
+                } else {
+                    l.addFirst(node.val);
+                }
+                if(node.left!=null) {
+                    q.offer(node.left);
+                }
+                if(node.right!=null) {
+                    q.offer(node.right);
+                }
+            }
+            flag = !flag;
+            ans.add(l);
+        }
+        return ans;
+    }
+}
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(N)
+
 ---
 
 ## 学习笔记
