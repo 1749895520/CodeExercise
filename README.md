@@ -568,14 +568,11 @@ class Solution {
 
 **时间复杂度：**	O(N)	**空间复杂度：**	O(N)
 
-
-
 ### 2022.6.24——链表
 
 周五——小雨——30℃/26℃
 
 今天开始从数据结构部分刷题。
-
 
 #### [21. 合并两个有序链表](https://leetcode.cn/problems/merge-two-sorted-lists/)
 
@@ -609,7 +606,6 @@ class Solution {
 
 **时间复杂度：**	O(m+n)	**空间复杂度：**	O(m+n)
 
-
 #### [86. 分隔链表](https://leetcode.cn/problems/partition-list/)
 
 **类型：**	链表		双指针
@@ -642,6 +638,59 @@ class Solution {
 **时间复杂度：**	O(N)	**空间复杂度：**	O(N)
 
 利用两个子链表，将大于等于x和小于x的节点分别存入不同的子链表，最后再将两个子链表连接。注意在每次存入子链表后要断开next的节点。
+
+
+
+#### [19. 删除链表的倒数第 N 个结点](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/)
+
+**类型：**	链表		双指针
+
+```java
+class Solution {
+    public ListNode removeNthFromEnd(ListNode head, int n) {
+        ListNode dummy = new ListNode(-1);
+        dummy.next = head;
+        ListNode p1 = dummy,p2 = dummy;
+        while(n-->=0) {
+            p1 = p1.next;
+        }
+        while(p1!=null) {
+            p1 = p1.next;
+            p2 = p2.next;
+        }
+        p2.next = p2.next.next;
+        return dummy.next;
+    }
+}
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(N)
+
+利用两个指针，第一个先向前走n+1次，然后两个节点一起走，直到第一个节点走到尾部时第二个节点就到了倒数第n+1个节点处，然后将第二个节点的下一个删除。
+
+
+#### [876. 链表的中间结点](https://leetcode.cn/problems/middle-of-the-linked-list/)
+
+**类型：**	链表		双指针
+
+```java
+class Solution {
+    public ListNode middleNode(ListNode head) {
+        ListNode slow = head,fast = head;
+        while(fast!=null&&fast.next!=null) {
+            fast = fast.next.next;
+            slow = slow.next;
+        }
+        return slow;
+    }
+}
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(N)
+
+同上。
+
+
 
 ---
 
@@ -795,8 +844,150 @@ void traverse(List<TreeNode> curLevelNodes) {
 }
 ```
 
+### 2022.6.24——二叉堆学习
+
+#### 1.二叉堆概览
+
+二叉堆就是用数组来维护的二叉树
+
+```java
+// 父节点的索引
+int parent(int root) {
+    return root / 2;
+}
+// 左孩子的索引
+int left(int root) {
+    return root * 2;
+}
+// 右孩子的索引
+int right(int root) {
+    return root * 2 + 1;
+}
+```
+
+![1656046302944](image/README/1656046302944.png)
+
+#### 2.优先级队列概览
+
+```java
+public class MaxPQ
+    <Key extends Comparable<Key>> {
+    // 存储元素的数组
+    private Key[] pq;
+    // 当前 Priority Queue 中的元素个数
+    private int size = 0;
+
+    public MaxPQ(int cap) {
+        // 索引 0 不用，所以多分配一个空间
+        pq = (Key[]) new Comparable[cap + 1];
+    }
+
+    /* 返回当前队列中最大元素 */
+    public Key max() {
+        return pq[1];
+    }
+
+    /* 插入元素 e */
+    public void insert(Key e) {...}
+
+    /* 删除并返回当前队列中最大元素 */
+    public Key delMax() {...}
+
+    /* 上浮第 x 个元素，以维护最大堆性质 */
+    private void swim(int x) {...}
+
+    /* 下沉第 x 个元素，以维护最大堆性质 */
+    private void sink(int x) {...}
+
+    /* 交换数组的两个元素 */
+    private void swap(int i, int j) {
+        Key temp = pq[i];
+        pq[i] = pq[j];
+        pq[j] = temp;
+    }
+
+    /* pq[i] 是否比 pq[j] 小？ */
+    private boolean less(int i, int j) {
+        return pq[i].compareTo(pq[j]) < 0;
+    }
+
+    /* 还有 left, right, parent 三个方法 */
+}
+```
+
+
+
+#### 3.实现swim和sink
+
+上浮：
+
+```java
+private void swim(int x) {
+    // 如果浮到堆顶，就不能再上浮了
+    while (x > 1 && less(parent(x), x)) {
+        // 如果第 x 个元素比上层大
+        // 将 x 换上去
+        swap(parent(x), x);
+        x = parent(x);
+    }
+}
+```
+
+
+
+下沉：
+
+```java
+private void sink(int x) {
+    // 如果沉到堆底，就沉不下去了
+    while (left(x) <= size) {
+        // 先假设左边节点较大
+        int max = left(x);
+        // 如果右边节点存在，比一下大小
+        if (right(x) <= size && less(max, right(x)))
+            max = right(x);
+        // 结点 x 比俩孩子都大，就不必下沉了
+        if (less(max, x)) break;
+        // 否则，不符合最大堆的结构，下沉 x 结点
+        swap(x, max);
+        x = max;
+    }
+}
+```
+
+
+
+#### 4.实现delMax和insert
+
+insert：
+
+```java
+public void insert(Key e) {
+    size++;
+    // 先把新元素加到最后
+    pq[size] = e;
+    // 然后让它上浮到正确的位置
+    swim(size);
+}
+```
+
+
+delMax：
+
+```java
+public Key delMax() {
+    // 最大堆的堆顶就是最大元素
+    Key max = pq[1];
+    // 把这个最大元素换到最后，删除之
+    swap(1, size);
+    pq[size] = null;
+    size--;
+    // 让 pq[1] 下沉到正确位置
+    sink(1);
+    return max;
+}
+```
+
 ---
-
-
 
 ## 补充内容：
