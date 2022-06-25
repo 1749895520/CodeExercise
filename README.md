@@ -639,8 +639,6 @@ class Solution {
 
 利用两个子链表，将大于等于x和小于x的节点分别存入不同的子链表，最后再将两个子链表连接。注意在每次存入子链表后要断开next的节点。
 
-
-
 #### [19. 删除链表的倒数第 N 个结点](https://leetcode.cn/problems/remove-nth-node-from-end-of-list/)
 
 **类型：**	链表		双指针
@@ -668,7 +666,6 @@ class Solution {
 
 利用两个指针，第一个先向前走n+1次，然后两个节点一起走，直到第一个节点走到尾部时第二个节点就到了倒数第n+1个节点处，然后将第二个节点的下一个删除。
 
-
 #### [876. 链表的中间结点](https://leetcode.cn/problems/middle-of-the-linked-list/)
 
 **类型：**	链表		双指针
@@ -691,6 +688,128 @@ class Solution {
 同上。
 
 
+### 2022.6.25——链表
+
+周六——雷阵雨转阴——33℃/28℃
+
+今天继续刷链表的题
+
+
+#### [206. 反转链表](https://leetcode.cn/problems/reverse-linked-list/)
+
+**类型：**	递归		链表
+
+```java
+class Solution {
+    public ListNode reverseList(ListNode head) {
+        if(head==null || head.next==null) {
+            return head;
+        }
+        ListNode last = reverseList(head.next);
+        head.next.next = head;
+        head.next = null;
+        return last;
+    }
+}
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(N)
+
+利用递归的方法实现，代码简洁且不容易出错，空间使用会过多。
+
+
+#### [92. 反转链表 II](https://leetcode.cn/problems/reverse-linked-list-ii/)
+
+**类型：**	递归		链表
+
+```java
+class Solution {
+    ListNode tail = null;
+    public ListNode reverseBetween(ListNode head, int left, int right) {
+        if(left == 1) {
+            return reverse(head,right);
+        }
+        head.next = reverseBetween(head.next,left-1,right-1);
+        return head;
+    }
+    public ListNode reverse(ListNode head,int n) {
+        if(n==1) {
+            tail = head.next;
+            return head;
+        }
+        ListNode last = reverse(head.next,n-1);
+        head.next.next = head;
+        head.next = tail;
+        return last;
+    }
+}
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(N)
+
+同上，只是加上了边界管理，详情见[递归魔法：反转单链表 :: labuladong的算法小抄](https://labuladong.github.io/algo/2/17/17/)
+
+
+#### [25. K 个一组翻转链表](https://leetcode.cn/problems/reverse-nodes-in-k-group/)
+
+**类型：**	递归		链表
+
+```java
+class Solution {
+    public ListNode reverseKGroup(ListNode head, int k) {
+        if(head==null) return null;
+        ListNode left = head,right = head;
+        for(int i=0;i<k;i++) {
+            if(right==null) {
+                return head;
+            }
+            right = right.next;
+        }
+        ListNode newHead = reverse(left,right);
+        left.next = reverseKGroup(right,k);
+        return newHead;
+    }
+    public ListNode reverse(ListNode head,ListNode tail) {
+        ListNode next = head,now = head,prev = null;
+        while(now!=tail) {
+            next = now.next;
+            now.next = prev;
+            prev = now;
+            now = next;
+        }
+        return prev;
+    }
+}
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(N)
+
+先通过for循环判断是否有长度为k的链表存在，记录起点和终点的位置，然后反转并返回终点节点，通过递归将所有起点的next连接上返回的终点节点，重新将链表连接。
+
+
+
+#### [234. 回文链表](https://leetcode.cn/problems/palindrome-linked-list/)
+
+**类型：**	递归		链表		栈		双指针
+
+1.递归法
+
+```java
+class Solution {
+    ListNode left;
+    public boolean isPalindrome(ListNode head) {
+        left = head;
+        return charge(head);
+    }
+    public boolean charge(ListNode right) {
+        if(right==null) return true;
+        boolean ans = charge(right.next);
+        ans = ans && left.val==right.val;
+        left = left.next;
+        return ans;
+    }
+}
+```
 
 ---
 
@@ -915,8 +1034,6 @@ public class MaxPQ
 }
 ```
 
-
-
 #### 3.实现swim和sink
 
 上浮：
@@ -932,8 +1049,6 @@ private void swim(int x) {
     }
 }
 ```
-
-
 
 下沉：
 
@@ -955,8 +1070,6 @@ private void sink(int x) {
 }
 ```
 
-
-
 #### 4.实现delMax和insert
 
 insert：
@@ -970,7 +1083,6 @@ public void insert(Key e) {
     swim(size);
 }
 ```
-
 
 delMax：
 
@@ -987,6 +1099,55 @@ public Key delMax() {
     return max;
 }
 ```
+
+
+
+### 2022.6.25——链表
+
+#### 1.反转指定区间链表元素
+
+主要分两部分，一部分是先递归到起点位置，一部分是执行反转right-left长度的链表元素。
+
+```java
+ListNode reverseBetween(ListNode head, int m, int n) {
+    // base case
+    if (m == 1) {
+        return reverseN(head, n);
+    }
+    // 前进到反转的起点触发 base case
+    head.next = reverseBetween(head.next, m - 1, n - 1);
+    return head;
+}
+```
+
+
+
+先前进到m=1时，就等同于反转前n-m个链表元素，注意最终的答案是在if(m==1)中返回的，下面的return只是将前进的m-1步又退回去了。
+
+
+```java
+ListNode successor = null; // 后驱节点
+
+// 反转以 head 为起点的 n 个节点，返回新的头结点
+ListNode reverseN(ListNode head, int n) {
+    if (n == 1) {
+        // 记录第 n + 1 个节点
+        successor = head.next;
+        return head;
+    }
+    // 以 head.next 为起点，需要反转前 n - 1 个节点
+    ListNode last = reverseN(head.next, n - 1);
+
+    head.next.next = head;
+    // 让反转之后的 head 节点和后面的节点连起来
+    head.next = successor;
+    return last;
+}
+```
+
+
+
+反转前n个链表元素部分和反转整个链表相似，只是将head.next = null改成了 = successor，在到了n = 1处就将head.next的节点信息传给successor作为反转部分反转后尾结点的下一个，也就能连接上非反转部分。
 
 ---
 
