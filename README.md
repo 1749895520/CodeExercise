@@ -687,13 +687,11 @@ class Solution {
 
 同上。
 
-
 ### 2022.6.25——链表
 
 周六——雷阵雨转阴——33℃/28℃
 
 今天继续刷链表的题
-
 
 #### [206. 反转链表](https://leetcode.cn/problems/reverse-linked-list/)
 
@@ -716,7 +714,6 @@ class Solution {
 **时间复杂度：**	O(N)	**空间复杂度：**	O(N)
 
 利用递归的方法实现，代码简洁且不容易出错，空间使用会过多。
-
 
 #### [92. 反转链表 II](https://leetcode.cn/problems/reverse-linked-list-ii/)
 
@@ -748,7 +745,6 @@ class Solution {
 **时间复杂度：**	O(N)	**空间复杂度：**	O(N)
 
 同上，只是加上了边界管理，详情见[递归魔法：反转单链表 :: labuladong的算法小抄](https://labuladong.github.io/algo/2/17/17/)
-
 
 #### [25. K 个一组翻转链表](https://leetcode.cn/problems/reverse-nodes-in-k-group/)
 
@@ -786,8 +782,6 @@ class Solution {
 
 先通过for循环判断是否有长度为k的链表存在，记录起点和终点的位置，然后反转并返回终点节点，通过递归将所有起点的next连接上返回的终点节点，重新将链表连接。
 
-
-
 #### [234. 回文链表](https://leetcode.cn/problems/palindrome-linked-list/)
 
 **类型：**	递归		链表		栈		双指针
@@ -810,6 +804,36 @@ class Solution {
     }
 }
 ```
+
+
+
+### 2022.6.26——数组
+
+周日——阴——36℃/27℃
+
+#### [303. 区域和检索 - 数组不可变](https://leetcode.cn/problems/range-sum-query-immutable/)
+
+**类型：**	设计		数组		前缀和
+
+```java
+class NumArray {
+    private int[] preSum;
+    public NumArray(int[] nums) {
+        preSum = new int[nums.length+1];
+        for(int i=1;i<preSum.length;i++) {
+            preSum[i] = preSum[i-1]+nums[i-1];
+        }
+    }
+  
+    public int sumRange(int left, int right) {
+        return preSum[right+1] - preSum[left];
+    }
+}
+
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(N)
+
 
 ---
 
@@ -1100,8 +1124,6 @@ public Key delMax() {
 }
 ```
 
-
-
 ### 2022.6.25——链表
 
 #### 1.反转指定区间链表元素
@@ -1120,10 +1142,7 @@ ListNode reverseBetween(ListNode head, int m, int n) {
 }
 ```
 
-
-
 先前进到m=1时，就等同于反转前n-m个链表元素，注意最终的答案是在if(m==1)中返回的，下面的return只是将前进的m-1步又退回去了。
-
 
 ```java
 ListNode successor = null; // 后驱节点
@@ -1144,8 +1163,6 @@ ListNode reverseN(ListNode head, int n) {
     return last;
 }
 ```
-
-
 
 反转前n个链表元素部分和反转整个链表相似，只是将head.next = null改成了 = successor，在到了n = 1处就将head.next的节点信息传给successor作为反转部分反转后尾结点的下一个，也就能连接上非反转部分。
 
