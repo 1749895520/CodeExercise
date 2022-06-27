@@ -606,6 +606,40 @@ class Solution {
 
 **时间复杂度：**	O(m+n)	**空间复杂度：**	O(m+n)
 
+
+#### [23. 合并K个升序链表](https://leetcode.cn/problems/merge-k-sorted-lists/)
+
+**类型：**	链表		分治		堆（优先队列）	归并排序
+
+```java
+class Solution {
+    public ListNode mergeKLists(ListNode[] lists) {
+        if(lists.length==0) return null;
+        ListNode dummy = new ListNode(-1);
+        ListNode p = dummy;
+        PriorityQueue<ListNode> pq = new PriorityQueue<>(lists.length,(a,b)->(a.val - b.val));
+        /*  将所有链表数组存入优先队列  */
+        for(ListNode head:lists) {
+            if(head!=null) {
+                pq.add(head);
+            }
+        }
+        /*  将优先队列全部存入结果链表  */
+        while(!pq.isEmpty()) {
+            ListNode node = pq.poll();
+            p.next = node;
+            //  将加入的head节点的下一个重新存入优先队列
+            if(node.next!=null) {
+                pq.add(node.next);
+            }
+            p = p.next;
+        }
+        return dummy.next;
+    }
+}
+```
+
+
 #### [86. 分隔链表](https://leetcode.cn/problems/partition-list/)
 
 **类型：**	链表		双指针
@@ -805,8 +839,6 @@ class Solution {
 }
 ```
 
-
-
 ### 2022.6.26——数组
 
 周日——阴——36℃/27℃
@@ -833,6 +865,123 @@ class NumArray {
 ```
 
 **时间复杂度：**	O(N)	**空间复杂度：**	O(N)
+
+
+
+### 2022.6.27——数组
+
+周一——阴——35℃/29℃
+
+#### [304. 二维区域和检索 - 矩阵不可变](https://leetcode.cn/problems/range-sum-query-2d-immutable/)
+
+**类型：**	设计		数组		前缀和	矩阵
+
+```
+class NumMatrix {
+    private int[][] preSum;
+    public NumMatrix(int[][] matrix) {
+        int m = matrix.length,n = matrix[0].length;
+        if(m==0 || n==0) return;
+        preSum = new int[m+1][n+1];
+        for(int i=1;i<=m;i++) {
+            for(int j=1;j<=n;j++) {
+                preSum[i][j] = preSum[i-1][j]+preSum[i][j-1]+matrix[i-1][j-1]-preSum[i-1][j-1];
+            }
+        }
+    }
+  
+    public int sumRegion(int row1, int col1, int row2, int col2) {
+        return preSum[row2+1][col2+1]+preSum[row1][col1]-preSum[row1][col2+1]-preSum[row2+1][col1];
+    }
+}
+```
+
+**时间复杂度：**	O(mn)	**空间复杂度：**	O(mn)
+
+
+#### [1094. 拼车](https://leetcode.cn/problems/car-pooling/)
+
+**类型：**	数组		前缀和	排序		模拟		堆（优先队列）
+
+```java
+class Solution {
+    private int[] len = new int[1010];
+    public boolean carPooling(int[][] trips, int capacity) {
+        for(int i=0;i<trips.length;i++) {
+            int from = trips[i][1] + 1,to = trips[i][2] + 1,num = trips[i][0];
+            len[from] += num;
+            len[to] -= num;
+        }
+        for(int i=1;i<=1001;i++) {
+            len[i] += len[i-1];
+            if(len[i]>capacity) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(N)
+
+
+#### [1109. 航班预订统计](https://leetcode.cn/problems/corporate-flight-bookings/)
+
+**类型：**	数组		前缀和
+
+```java
+class Solution {
+    public int[] corpFlightBookings(int[][] bookings, int n) {
+        int[] ans = new int[n];
+        for(int i=0;i<bookings.length;i++) {
+            int first = bookings[i][0]-1,last = bookings[i][1],num = bookings[i][2];
+            ans[first] += num;
+            if(last<n) {
+                ans[last] -= num;
+            }
+        }
+        for(int i=1;i<n;i++) {
+            ans[i] += ans[i-1];
+        }
+        return ans;
+    }
+}
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(N)
+
+
+#### [48. 旋转图像](https://leetcode.cn/problems/rotate-image/)
+
+**类型：**	数组		数学		矩阵
+
+```java
+class Solution {
+    public void rotate(int[][] matrix) {
+        int n = matrix.length;
+        for(int i=0;i<n;i++) {
+            for(int j=i;j<n;j++) {
+                int temp = matrix[i][j];
+                matrix[i][j] = matrix[j][i];
+                matrix[j][i] = temp;
+            }
+        }
+        for(int i=0;i<n;i++) {
+            int left = 0,right = n-1;
+            while(left<right) {
+                int temp = matrix[i][left];
+                matrix[i][left] = matrix[i][right];
+                matrix[i][right] = temp;
+                left++;
+                right--;
+            }
+        }
+    }
+}
+```
+
+**时间复杂度：**	O(N²)	**空间复杂度：**	O(1)
 
 
 ---
