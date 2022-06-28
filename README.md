@@ -606,7 +606,6 @@ class Solution {
 
 **时间复杂度：**	O(m+n)	**空间复杂度：**	O(m+n)
 
-
 #### [23. 合并K个升序链表](https://leetcode.cn/problems/merge-k-sorted-lists/)
 
 **类型：**	链表		分治		堆（优先队列）	归并排序
@@ -638,7 +637,6 @@ class Solution {
     }
 }
 ```
-
 
 #### [86. 分隔链表](https://leetcode.cn/problems/partition-list/)
 
@@ -866,8 +864,6 @@ class NumArray {
 
 **时间复杂度：**	O(N)	**空间复杂度：**	O(N)
 
-
-
 ### 2022.6.27——数组
 
 周一——阴——35℃/29℃
@@ -898,7 +894,6 @@ class NumMatrix {
 
 **时间复杂度：**	O(mn)	**空间复杂度：**	O(mn)
 
-
 #### [1094. 拼车](https://leetcode.cn/problems/car-pooling/)
 
 **类型：**	数组		前缀和	排序		模拟		堆（优先队列）
@@ -925,7 +920,6 @@ class Solution {
 
 **时间复杂度：**	O(N)	**空间复杂度：**	O(N)
 
-
 #### [1109. 航班预订统计](https://leetcode.cn/problems/corporate-flight-bookings/)
 
 **类型：**	数组		前缀和
@@ -950,7 +944,6 @@ class Solution {
 ```
 
 **时间复杂度：**	O(N)	**空间复杂度：**	O(N)
-
 
 #### [48. 旋转图像](https://leetcode.cn/problems/rotate-image/)
 
@@ -983,6 +976,82 @@ class Solution {
 
 **时间复杂度：**	O(N²)	**空间复杂度：**	O(1)
 
+
+
+### 2022.6.28——数组
+
+周二——晴转小雨——30℃/27℃
+
+#### [54. 螺旋矩阵](https://leetcode.cn/problems/spiral-matrix/)
+
+**类型：**	数组		矩阵		模拟
+
+```java
+class Solution {
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> ans = new ArrayList<>();
+        int m = matrix.length,n = matrix[0].length;
+        int top = 0,btm = m-1,left = 0,right = n-1;
+        while(ans.size()<m*n) {
+            for(int i=left;i<=right && top<=btm;i++) {
+                ans.add(matrix[top][i]);
+            }
+            top++;
+            for(int i=top;i<=btm && left<=right;i++) {
+                ans.add(matrix[i][right]);
+            }
+            right--;
+            for(int i=right;i>=left && top<=btm;i--) {
+                ans.add(matrix[btm][i]);
+            }
+            btm--;
+            for(int i=btm;i>=top && left<=right;i--) {
+                ans.add(matrix[i][left]);
+            }
+            left++;
+        }
+        return ans;
+    }
+}
+```
+
+**时间复杂度：**	O(mn)	**空间复杂度：**	O(mn)
+
+
+#### [59. 螺旋矩阵 II](https://leetcode.cn/problems/spiral-matrix-ii/)
+
+**类型：**	数组		矩阵		模拟
+
+```java
+class Solution {
+    public int[][] generateMatrix(int n) {
+        int[][] ans = new int[n][n];
+        ans[0][0] = 1;
+        int i = 0,j = 0,num = 2;
+        while(num<=n*n) {
+            while(++j<n && ans[i][j]==0) {
+                ans[i][j] = num++;
+            }
+            j--;
+            while(++i<n && ans[i][j]==0) {
+                ans[i][j] = num++;
+            }
+            i--;
+            while(--j>=0 && ans[i][j]==0) {
+                ans[i][j] = num++;
+            }
+            j++;
+            while(--i>=0 && ans[i][j]==0) {
+                ans[i][j] = num++;
+            }
+            i++;
+        }
+        return ans;
+    }
+}
+```
+
+**时间复杂度：**	O(N²)	**空间复杂度：**	O(N²)
 
 ---
 
