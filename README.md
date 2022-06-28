@@ -1053,6 +1053,51 @@ class Solution {
 
 **时间复杂度：**	O(N²)	**空间复杂度：**	O(N²)
 
+
+
+#### [76. 最小覆盖子串](https://leetcode.cn/problems/minimum-window-substring/)
+
+**类型：**	哈希表	字符串	滑动窗口
+
+```cpp
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        unordered_map<char,int> need,window;
+        for(char c:t) {
+            need[c]++;
+        }
+        int left = 0,right = 0,valid = 0;
+        int start = 0,len = INT_MAX;
+        while(right<s.size()) {
+            char come = s[right++];
+            if(need.count(come)) {
+                window[come]++;
+                if(window[come] == need[come]) {
+                    valid++;
+                }
+            }
+            while(valid == need.size()) {
+                if(right-left<len) {
+                    len = right - left;
+                    start = left;
+                }
+                char go = s[left++];
+                if(need.count(go)) {
+                    if(window[go] == need[go]) {
+                        valid--;
+                    }
+                    window[go]--;
+                }
+            }
+        }
+        return len == INT_MAX ? "" : s.substr(start,len);
+    }
+};
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(N)
+
 ---
 
 ## 学习笔记
@@ -1383,6 +1428,62 @@ ListNode reverseN(ListNode head, int n) {
 ```
 
 反转前n个链表元素部分和反转整个链表相似，只是将head.next = null改成了 = successor，在到了n = 1处就将head.next的节点信息传给successor作为反转部分反转后尾结点的下一个，也就能连接上非反转部分。
+
+
+
+### 2022.6.28——滑动窗口学习
+
+详情见：[我写了首诗，把滑动窗口算法算法变成了默写题 :: labuladong的算法小抄](https://labuladong.github.io/algo/2/18/25/)
+
+```java
+int left = 0, right = 0;
+
+while (right < s.size()) {
+    // 增大窗口
+    window.add(s[right]);
+    right++;
+  
+    while (window needs shrink) {
+        // 缩小窗口
+        window.remove(s[left]);
+        left++;
+    }
+}
+```
+
+
+```java
+/* 滑动窗口算法框架 */
+void slidingWindow(string s, string t) {
+    unordered_map<char, int> need, window;
+    for (char c : t) need[c]++;
+  
+    int left = 0, right = 0;
+    int valid = 0; 
+    while (right < s.size()) {
+        // c 是将移入窗口的字符
+        char c = s[right];
+        // 增大窗口
+        right++;
+        // 进行窗口内数据的一系列更新
+        ...
+
+        /*** debug 输出的位置 ***/
+        printf("window: [%d, %d)\n", left, right);
+        /********************/
+      
+        // 判断左侧窗口是否要收缩
+        while (window needs shrink) {
+            // d 是将移出窗口的字符
+            char d = s[left];
+            // 缩小窗口
+            left++;
+            // 进行窗口内数据的一系列更新
+            ...
+        }
+    }
+}
+```
 
 ---
 
