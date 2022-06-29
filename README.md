@@ -976,8 +976,6 @@ class Solution {
 
 **时间复杂度：**	O(N²)	**空间复杂度：**	O(1)
 
-
-
 ### 2022.6.28——数组
 
 周二——晴转小雨——30℃/27℃
@@ -1017,7 +1015,6 @@ class Solution {
 
 **时间复杂度：**	O(mn)	**空间复杂度：**	O(mn)
 
-
 #### [59. 螺旋矩阵 II](https://leetcode.cn/problems/spiral-matrix-ii/)
 
 **类型：**	数组		矩阵		模拟
@@ -1052,8 +1049,6 @@ class Solution {
 ```
 
 **时间复杂度：**	O(N²)	**空间复杂度：**	O(N²)
-
-
 
 #### [76. 最小覆盖子串](https://leetcode.cn/problems/minimum-window-substring/)
 
@@ -1097,6 +1092,199 @@ public:
 ```
 
 **时间复杂度：**	O(N)	**空间复杂度：**	O(N)
+
+
+
+### 2022.6.29——滑动窗口
+
+周三——多云转小雨——34℃/26℃
+
+
+#### [209. 长度最小的子数组](https://leetcode.cn/problems/minimum-size-subarray-sum/)
+
+**类型：**	数组		二分查找		前缀和		滑动窗口
+
+```java
+class Solution {
+    public int minSubArrayLen(int target, int[] nums) {
+        return getMinLenth(target,nums);
+    }
+    public int getMinLenth(int target,int[] nums) {
+        int left = 0,right = 0,sum = 0,minLenth = Integer.MAX_VALUE;
+        while(right<nums.length) {
+            sum += nums[right++];
+            while(sum - nums[left] >= target) {
+                sum -= nums[left++];
+            }
+            if(sum>=target) {
+                minLenth = Math.min(right-left,minLenth);
+            }
+        }
+        return minLenth == Integer.MAX_VALUE ? 0 : minLenth;
+    }
+}
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(1)
+
+
+#### [567. 字符串的排列](https://leetcode.cn/problems/permutation-in-string/)
+
+**类型：**	哈希表	双指针	字符串	滑动窗口
+
+```cpp
+class Solution {
+public:
+    bool checkInclusion(string s1, string s2) {
+        unordered_map<char,int> need,window;
+        for(char c:s1) {
+            need[c]++;
+        }
+        int left = 0,right = 0,valid = 0;
+        while(right<s2.size()) {
+            char come = s2[right++];
+            if(need.count(come)) {
+                window[come]++;
+                if(window[come]==need[come]) {
+                    valid++;
+                }
+            }
+            while(right-left>s1.size()) {
+                char go = s2[left++];
+                if(need.count(go)) {
+                    if(need[go]==window[go]) {
+                        valid--;
+                    }
+                    window[go]--;
+                }
+            }
+            if(need.size()==valid) {
+                return true;
+            }
+        }
+        return false;
+    }
+};
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(1)
+
+
+#### [76. 最小覆盖子串](https://leetcode.cn/problems/minimum-window-substring/)
+
+**类型：**	哈希表	字符串	滑动窗口
+
+```cpp
+class Solution {
+public:
+    string minWindow(string s, string t) {
+        unordered_map<char,int> need,window;
+        for(char c:t) {
+            need[c]++;
+        }
+        int left = 0,right = 0,valid = 0;
+        int start = 0,len = INT_MAX;
+        while(right<s.size()) {
+            char come = s[right++];
+            if(need.count(come)) {
+                window[come]++;
+                if(window[come] == need[come]) {
+                    valid++;
+                }
+            }
+            while(valid == need.size()) {
+                if(right-left<len) {
+                    len = right - left;
+                    start = left;
+                }
+                char go = s[left++];
+                if(need.count(go)) {
+                    if(window[go] == need[go]) {
+                        valid--;
+                    }
+                    window[go]--;
+                }
+            }
+        }
+        return len == INT_MAX ? "" : s.substr(start,len);
+    }
+};
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(1)
+
+
+
+#### [438. 找到字符串中所有字母异位词](https://leetcode.cn/problems/find-all-anagrams-in-a-string/)
+
+**类型：**	哈希表	字符串	滑动窗口
+
+```cpp
+class Solution {
+public:
+    vector<int> findAnagrams(string s, string p) {
+        vector<int> ans;
+        unordered_map<char,int> need,window;
+        for(char c:p) {
+            need[c]++;
+        }
+        int left = 0,right = 0,valid = 0;
+        while(right<s.size()) {
+            char come = s[right++];
+            if(need.count(come)) {
+                window[come]++;
+                if(window[come]==need[come]) {
+                    valid++;
+                }
+            }
+            while(right-left>p.size()) {
+                char go = s[left++];
+                if(need.count(go)) {
+                    if(need[go]==window[go]) {
+                        valid--;
+                    }
+                    window[go]--;
+                }
+            }
+            if(need.size()==valid) {
+                ans.push_back(left);
+            }
+        }
+        return ans;
+    }
+};
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(1)
+
+
+#### [3. 无重复字符的最长子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/)
+
+**类型：**	哈希表	字符串	滑动窗口
+
+```cpp
+class Solution {
+public:
+    int lengthOfLongestSubstring(string s) {
+        unordered_map<char,int> window;
+        int left = 0,right = 0,maxLen = 0;
+        while(right<s.size()) {
+            char come = s[right++];
+            window[come]++;
+            while(window[come]>1) {
+                char go = s[left++];
+                window[go]--;
+            }
+            maxLen = max(maxLen,right-left);
+        }
+        return maxLen;
+    }
+};
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(1)
+
+
 
 ---
 
@@ -1429,8 +1617,6 @@ ListNode reverseN(ListNode head, int n) {
 
 反转前n个链表元素部分和反转整个链表相似，只是将head.next = null改成了 = successor，在到了n = 1处就将head.next的节点信息传给successor作为反转部分反转后尾结点的下一个，也就能连接上非反转部分。
 
-
-
 ### 2022.6.28——滑动窗口学习
 
 详情见：[我写了首诗，把滑动窗口算法算法变成了默写题 :: labuladong的算法小抄](https://labuladong.github.io/algo/2/18/25/)
@@ -1451,7 +1637,6 @@ while (right < s.size()) {
 }
 ```
 
-
 ```java
 /* 滑动窗口算法框架 */
 void slidingWindow(string s, string t) {
@@ -1471,7 +1656,7 @@ void slidingWindow(string s, string t) {
         /*** debug 输出的位置 ***/
         printf("window: [%d, %d)\n", left, right);
         /********************/
-      
+    
         // 判断左侧窗口是否要收缩
         while (window needs shrink) {
             // d 是将移出窗口的字符
