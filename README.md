@@ -1093,12 +1093,9 @@ public:
 
 **时间复杂度：**	O(N)	**空间复杂度：**	O(N)
 
-
-
 ### 2022.6.29——滑动窗口
 
 周三——多云转小雨——34℃/26℃
-
 
 #### [209. 长度最小的子数组](https://leetcode.cn/problems/minimum-size-subarray-sum/)
 
@@ -1126,7 +1123,6 @@ class Solution {
 ```
 
 **时间复杂度：**	O(N)	**空间复杂度：**	O(1)
-
 
 #### [567. 字符串的排列](https://leetcode.cn/problems/permutation-in-string/)
 
@@ -1168,7 +1164,6 @@ public:
 ```
 
 **时间复杂度：**	O(N)	**空间复杂度：**	O(1)
-
 
 #### [76. 最小覆盖子串](https://leetcode.cn/problems/minimum-window-substring/)
 
@@ -1213,8 +1208,6 @@ public:
 
 **时间复杂度：**	O(N)	**空间复杂度：**	O(1)
 
-
-
 #### [438. 找到字符串中所有字母异位词](https://leetcode.cn/problems/find-all-anagrams-in-a-string/)
 
 **类型：**	哈希表	字符串	滑动窗口
@@ -1257,7 +1250,6 @@ public:
 
 **时间复杂度：**	O(N)	**空间复杂度：**	O(1)
 
-
 #### [3. 无重复字符的最长子串](https://leetcode.cn/problems/longest-substring-without-repeating-characters/)
 
 **类型：**	哈希表	字符串	滑动窗口
@@ -1285,6 +1277,150 @@ public:
 **时间复杂度：**	O(N)	**空间复杂度：**	O(1)
 
 
+
+### 2022.6.30——数组/MySQL
+
+周四——中雨转晴——30℃/25℃
+
+
+#### [595. 大的国家](https://leetcode.cn/problems/big-countries/)
+
+```sql
+# Write your MySQL query statement below
+select 
+    name,population,area 
+from 
+    World 
+where 
+    area>=3000000 
+or 
+    population>=25000000;
+```
+
+
+
+#### [1757. 可回收且低脂的产品](https://leetcode.cn/problems/recyclable-and-low-fat-products/)
+
+```sql
+# Write your MySQL query statement below
+select
+    product_id
+from
+    Products
+where
+    low_fats='Y'
+and
+    recyclable='Y';
+```
+
+
+
+#### [584. 寻找用户推荐人](https://leetcode.cn/problems/find-customer-referee/)
+
+```sql
+# Write your MySQL query statement below
+select
+    name
+from
+    customer
+where
+    referee_id!=2
+or
+    referee_id is null;
+```
+
+
+#### [183. 从不订购的客户](https://leetcode.cn/problems/customers-who-never-order/)
+
+```sql
+# Write your MySQL query statement below
+select
+    Name as 'Customers'
+from
+    Customers
+where
+    Id
+not in(
+    select
+        CustomerId
+    from
+        Orders
+);
+
+```
+
+
+
+#### [704. 二分查找](https://leetcode.cn/problems/binary-search/)
+
+**类型：**	数组		二分查找
+
+```java
+class Solution {
+    public int search(int[] nums, int target) {
+        int left = 0,right = nums.length-1;
+        while(left<=right) {
+            int mid = left+(right-left)/2;
+            if(nums[mid]==target) {
+                return mid;
+            } else if(nums[mid]>target) {
+                right = mid - 1;
+            } else if(nums[mid]<target) {
+                left = mid + 1;
+            }
+        }
+        return -1;
+    }
+}
+```
+
+**时间复杂度：**	O(log n)	**空间复杂度：**	O(1)
+
+
+#### [34. 在排序数组中查找元素的第一个和最后一个位置](https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/)
+
+**类型：**	数组		二分查找
+
+```java
+class Solution {
+    public int[] searchRange(int[] nums, int target) {
+        int[] ans = {findLeftBound(nums,target),findRightBound(nums,target)};
+        return ans;
+    }
+    public int findLeftBound(int[] nums,int target) {
+        int left = 0,right = nums.length-1;
+        while(left<=right) {
+            int mid = left+(right-left)/2;
+            if(nums[mid]<target) {
+                left = mid+1;
+            } else {
+                right = mid-1;
+            }
+        }
+        if(left>=nums.length || nums[left]!=target) {
+            return -1;
+        }
+        return left;
+    }
+    public int findRightBound(int[] nums,int target) {
+        int left = 0,right = nums.length-1;
+        while(left<=right) {
+            int mid = left+(right-left)/2;
+            if(nums[mid]>target) {
+                right = mid-1;
+            } else {
+                left = mid+1;
+            }
+        }
+        if(right<0 || nums[right]!=target) {
+            return -1;
+        }
+        return right;
+    }
+}
+```
+
+**时间复杂度：**	O(log n)	**空间复杂度：**	O(1)
 
 ---
 
@@ -1656,7 +1792,7 @@ void slidingWindow(string s, string t) {
         /*** debug 输出的位置 ***/
         printf("window: [%d, %d)\n", left, right);
         /********************/
-    
+  
         // 判断左侧窗口是否要收缩
         while (window needs shrink) {
             // d 是将移出窗口的字符
@@ -1669,6 +1805,106 @@ void slidingWindow(string s, string t) {
     }
 }
 ```
+
+
+
+### 2022.6.30——二分查找
+
+#### 1.二分查找框架
+
+```java
+int binarySearch(int[] nums, int target) {
+    int left = 0, right = ...;
+
+    while(...) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] == target) {
+            ...
+        } else if (nums[mid] < target) {
+            left = ...
+        } else if (nums[mid] > target) {
+            right = ...
+        }
+    }
+    return ...;
+}
+```
+
+
+#### 2.查找一个数基本框架
+
+```java
+int binarySearch(int[] nums, int target) {
+    int left = 0; 
+    int right = nums.length - 1; // 注意
+
+    while(left <= right) {
+        int mid = left + (right - left) / 2;
+        if(nums[mid] == target)
+            return mid; 
+        else if (nums[mid] < target)
+            left = mid + 1; // 注意
+        else if (nums[mid] > target)
+            right = mid - 1; // 注意
+    }
+    return -1;
+}
+```
+
+
+#### 3.寻找左侧边界的框架
+
+```java
+int left_bound(int[] nums, int target) {
+    int left = 0, right = nums.length - 1;
+    // 搜索区间为 [left, right]
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] < target) {
+            // 搜索区间变为 [mid+1, right]
+            left = mid + 1;
+        } else if (nums[mid] > target) {
+            // 搜索区间变为 [left, mid-1]
+            right = mid - 1;
+        } else if (nums[mid] == target) {
+            // 收缩右侧边界
+            right = mid - 1;
+        }
+    }
+    // 检查出界情况
+    if (left >= nums.length || nums[left] != target) {
+        return -1;
+    }
+    return left;
+}
+```
+
+
+
+#### 4.寻找右侧边界的框架
+
+```java
+int right_bound(int[] nums, int target) {
+    int left = 0, right = nums.length - 1;
+    while (left <= right) {
+        int mid = left + (right - left) / 2;
+        if (nums[mid] < target) {
+            left = mid + 1;
+        } else if (nums[mid] > target) {
+            right = mid - 1;
+        } else if (nums[mid] == target) {
+            // 这里改成收缩左侧边界即可
+            left = mid + 1;
+        }
+    }
+    // 这里改为检查 right 越界的情况，见下图
+    if (right < 0 || nums[right] != target) {
+        return -1;
+    }
+    return right;
+}
+```
+
 
 ---
 
