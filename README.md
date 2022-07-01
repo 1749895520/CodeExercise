@@ -1276,12 +1276,9 @@ public:
 
 **时间复杂度：**	O(N)	**空间复杂度：**	O(1)
 
-
-
 ### 2022.6.30——数组/MySQL
 
 周四——中雨转晴——30℃/25℃
-
 
 #### [595. 大的国家](https://leetcode.cn/problems/big-countries/)
 
@@ -1297,8 +1294,6 @@ or
     population>=25000000;
 ```
 
-
-
 #### [1757. 可回收且低脂的产品](https://leetcode.cn/problems/recyclable-and-low-fat-products/)
 
 ```sql
@@ -1313,8 +1308,6 @@ and
     recyclable='Y';
 ```
 
-
-
 #### [584. 寻找用户推荐人](https://leetcode.cn/problems/find-customer-referee/)
 
 ```sql
@@ -1328,7 +1321,6 @@ where
 or
     referee_id is null;
 ```
-
 
 #### [183. 从不订购的客户](https://leetcode.cn/problems/customers-who-never-order/)
 
@@ -1348,8 +1340,6 @@ not in(
 );
 
 ```
-
-
 
 #### [704. 二分查找](https://leetcode.cn/problems/binary-search/)
 
@@ -1375,7 +1365,6 @@ class Solution {
 ```
 
 **时间复杂度：**	O(log n)	**空间复杂度：**	O(1)
-
 
 #### [34. 在排序数组中查找元素的第一个和最后一个位置](https://leetcode.cn/problems/find-first-and-last-position-of-element-in-sorted-array/)
 
@@ -1421,6 +1410,56 @@ class Solution {
 ```
 
 **时间复杂度：**	O(log n)	**空间复杂度：**	O(1)
+
+
+
+### 2022.7.1——MySQL
+
+周五——晴转多云——34℃/25℃
+
+
+#### [1873. 计算特殊奖金](https://leetcode.cn/problems/calculate-special-bonus/)
+
+```sql
+# Write your MySQL query statement below
+select 
+    employee_id,
+    if(employee_id%2!=0 and left(name,1)!='M',salary,0) as 'bonus'
+from
+    Employees
+order by
+    employee_id;
+```
+
+
+
+#### [627. 变更性别](https://leetcode.cn/problems/swap-salary/)
+
+```sql
+# Write your MySQL query statement below
+update 
+    Salary
+set
+    sex = case sex
+    when 'm' then 'f'
+    else 'm'
+    end;
+```
+
+
+#### [196. 删除重复的电子邮箱](https://leetcode.cn/problems/delete-duplicate-emails/)
+
+```sql
+# Please write a DELETE statement and DO NOT write a SELECT statement.
+# Write your MySQL query statement below
+DELETE
+    p1
+from
+    Person p1,Person p2
+where
+    p1.email=p2.email and p1.id>p2.id;
+```
+
 
 ---
 
@@ -1806,8 +1845,6 @@ void slidingWindow(string s, string t) {
 }
 ```
 
-
-
 ### 2022.6.30——二分查找
 
 #### 1.二分查找框架
@@ -1830,7 +1867,6 @@ int binarySearch(int[] nums, int target) {
 }
 ```
 
-
 #### 2.查找一个数基本框架
 
 ```java
@@ -1850,7 +1886,6 @@ int binarySearch(int[] nums, int target) {
     return -1;
 }
 ```
-
 
 #### 3.寻找左侧边界的框架
 
@@ -1879,8 +1914,6 @@ int left_bound(int[] nums, int target) {
 }
 ```
 
-
-
 #### 4.寻找右侧边界的框架
 
 ```java
@@ -1904,7 +1937,6 @@ int right_bound(int[] nums, int target) {
     return right;
 }
 ```
-
 
 ---
 
