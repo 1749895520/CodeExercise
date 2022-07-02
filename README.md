@@ -1411,12 +1411,9 @@ class Solution {
 
 **时间复杂度：**	O(log n)	**空间复杂度：**	O(1)
 
-
-
 ### 2022.7.1——MySQL
 
 周五——晴转多云——34℃/25℃
-
 
 #### [1873. 计算特殊奖金](https://leetcode.cn/problems/calculate-special-bonus/)
 
@@ -1431,8 +1428,6 @@ order by
     employee_id;
 ```
 
-
-
 #### [627. 变更性别](https://leetcode.cn/problems/swap-salary/)
 
 ```sql
@@ -1445,7 +1440,6 @@ set
     else 'm'
     end;
 ```
-
 
 #### [196. 删除重复的电子邮箱](https://leetcode.cn/problems/delete-duplicate-emails/)
 
@@ -1460,6 +1454,100 @@ where
     p1.email=p2.email and p1.id>p2.id;
 ```
 
+
+
+### 2022.7.2——数组/MySQL
+
+周六——阴转多云——34℃/25℃
+
+#### [528. 按权重随机选择](https://leetcode.cn/problems/random-pick-with-weight/)
+
+**类型：**	数学		二分查找		前缀和	随机化
+
+```java
+class Solution {
+    int[] preSum = null;
+    public Solution(int[] w) {
+        preSum = new int[w.length+1];
+        for(int i=1;i<=w.length;i++) {
+            preSum[i] = preSum[i-1]+w[i-1];
+        }
+    }
+  
+    public int pickIndex() {
+        Random rand = new Random();
+        int target = rand.nextInt(preSum[preSum.length-1])+1;
+        return findLeft(preSum, target) - 1;
+    }
+    public int findLeft(int[] preSum,int target) {
+        int left = 0,right = preSum.length;
+        while(left<right) {
+            int mid = left + (right-left)/2;
+            if(preSum[mid]>=target) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+}
+
+/**
+ * Your Solution object will be instantiated and called as such:
+ * Solution obj = new Solution(w);
+ * int param_1 = obj.pickIndex();
+ */
+```
+
+**时间复杂度：**	O(N)	**空间复杂度：**	O(N)
+
+
+#### [1667. 修复表中的名字](https://leetcode.cn/problems/fix-names-in-a-table/)
+
+```sql
+# Write your MySQL query statement below
+select
+    user_id,
+    concat(upper(left(name,1)),lower(substr(name,2)))
+    as name
+from
+    Users
+order by
+    user_id
+```
+
+
+#### [1484. 按日期分组销售产品](https://leetcode.cn/problems/group-sold-products-by-the-date/)
+
+```sql
+# Write your MySQL query statement below
+select
+    sell_date,
+    count(distinct product) as num_sold,
+    group_concat(distinct product) as products
+from
+    Activities
+group by
+    sell_date
+order by
+    sell_date;
+```
+
+
+#### [1527. 患某种疾病的患者](https://leetcode.cn/problems/patients-with-a-condition/)
+
+```sql
+# Write your MySQL query statement below
+select
+    *
+from
+    Patients
+where
+    conditions like '% DIAB1%'
+or 
+    conditions like 'DIAB1%';
+```
 
 ---
 
