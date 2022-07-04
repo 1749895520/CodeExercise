@@ -1454,8 +1454,6 @@ where
     p1.email=p2.email and p1.id>p2.id;
 ```
 
-
-
 ### 2022.7.2——数组/MySQL
 
 周六——阴转多云——34℃/25℃
@@ -1502,7 +1500,6 @@ class Solution {
 
 **时间复杂度：**	O(N)	**空间复杂度：**	O(N)
 
-
 #### [1667. 修复表中的名字](https://leetcode.cn/problems/fix-names-in-a-table/)
 
 ```sql
@@ -1516,7 +1513,6 @@ from
 order by
     user_id
 ```
-
 
 #### [1484. 按日期分组销售产品](https://leetcode.cn/problems/group-sold-products-by-the-date/)
 
@@ -1534,7 +1530,6 @@ order by
     sell_date;
 ```
 
-
 #### [1527. 患某种疾病的患者](https://leetcode.cn/problems/patients-with-a-condition/)
 
 ```sql
@@ -1548,6 +1543,80 @@ where
 or 
     conditions like 'DIAB1%';
 ```
+
+### 2022.7.3——MySQL
+
+周日——多云转阴——34℃/26℃
+
+#### [1965. 丢失信息的雇员](https://leetcode.cn/problems/employees-with-missing-information/)
+
+```sql
+# Write your MySQL query statement below
+select
+    employee_id
+from
+    Employees
+where
+    employee_id not in(select employee_id from Salaries)
+union
+select
+    employee_id
+from
+    Salaries
+where
+    employee_id not in(select employee_id from Employees)
+order by
+    employee_id;
+```
+
+
+
+### 2022.7.4——数组
+
+周一——中雨转阴——32℃/26℃
+
+#### [1011. 在 D 天内送达包裹的能力](https://leetcode.cn/problems/capacity-to-ship-packages-within-d-days/)
+
+**类型：**	数组		二分查找
+
+```java
+class Solution {
+    public int shipWithinDays(int[] weights, int days) {
+        int left = 0,right = 1;
+        for (int n : weights) {
+            left = Math.max(left,n);
+            right += n;
+        }
+        while(left<right) {
+            int mid = left + (right-left) / 2;
+            if(costDays(weights,mid) <= days) {
+                right = mid;
+            } else {
+                left = mid + 1;
+            }
+        }
+        return left;
+    }
+    public int costDays(int[] weights,int weight) {
+        int days = 0;
+        for(int i=0;i<weights.length;) {
+            int cap = 0;
+            while(i<weights.length) {
+                cap += weights[i++];
+                if(cap>weight) {
+                    i--;
+                    break;
+                }
+            }
+            days++;
+        }
+        return days;
+    }
+}
+```
+
+**时间复杂度：**	O(n log(Σw))	**空间复杂度：**	O(1)
+
 
 ---
 
